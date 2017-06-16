@@ -1,0 +1,6 @@
+*.o
+*.bin
+*.dis
+*.lds
+i2c_elf
+
