@@ -140,6 +140,9 @@ void nand_read(unsigned int addr, unsigned char *buf, unsigned int len)
 {
 	int col = addr % 2048;
 	int i = 0;
+    unsigned char oob;
+    int i_pre;
+    int col_pre;
 		
 	/* 1. 选中 */
 	nand_select();
@@ -159,12 +162,21 @@ void nand_read(unsigned int addr, unsigned char *buf, unsigned int len)
 		nand_wait_ready();
 
 		/* 6. 读数据 */
+        i_pre = i;
+        col_pre = col;
 		for (; (col < 2048) && (i < len); col++)
 		{
 			buf[i] = nand_data();
 			i++;
 			addr++;
 		}
+        oob = nand_data();
+        if (oob != 0xff)
+        {
+            /* bad block */
+            i = i_pre;
+            col = col_pre;
+        }
 		
 		col = 0;
 	}
