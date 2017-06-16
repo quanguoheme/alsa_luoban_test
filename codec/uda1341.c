@@ -107,3 +107,16 @@ void uda1341_init(void)
 	uda1341_l3_data(EXTADDR(EXT2));
 }
 
+/*
+ * volume : 0~100, 0表示最小音量
+ */
+void uda1341_set_volume(int volume)
+{
+    /* uda1341
+     * 0~63, 0表示最大音量
+     */
+    int val = 63 - volume * 63 / 100;
+    uda1341_l3_address(UDA1341_REG_DATA0);
+    uda1341_l3_data(val);    
+}
+    

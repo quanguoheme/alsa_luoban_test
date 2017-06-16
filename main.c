@@ -2,9 +2,6 @@
 #include "serial.h"
 #include "i2c.h"
 
-unsigned char at24cxx_read(unsigned char address);
-void at24cxx_write(unsigned char address, unsigned char data);
-
 void delay(void)
 {
     volatile int i = 1000;
@@ -15,10 +12,6 @@ void delay(void)
 int main()
 {
     char c;
-    char str[200];
-    int i;
-	int address;
-	int data;
     int volume = 50; /* 0~100 */
 
     unsigned int wav_buf = 0x30000000;
@@ -26,6 +19,8 @@ int main()
     int channels;
     int bits_per_sample;
     int wav_size;
+
+    void (*set_volume)(int);
     
     uart0_init();   // 波特率115200，8N1(8个数据位，无校验位，1个停止位)
 
@@ -50,7 +45,7 @@ menu:
          * codec芯片才能被使用
          */
         iis_init(bits_per_sample, fs);
-        dma_init();
+        dma_init(wav_buf, wav_size);
 
 
         printf("\r\n##### Sound Menu #####\r\n");
@@ -71,6 +66,8 @@ menu:
                 
                 /* codec init */
                 wm8976_init();
+
+                set_volume = wm8976_set_volume;
                 break;
             }
             
@@ -82,6 +79,8 @@ menu:
 
                 /* codec init */
                 uda1341_init();
+
+                set_volume = uda1341_set_volume;
                 break;
             }
 
@@ -93,6 +92,8 @@ menu:
 
                 /* codec init */
                 uda1341_init();
+
+                set_volume = uda1341_set_volume;
                 break;
             }
 
@@ -102,7 +103,8 @@ menu:
             }
         }        
 
-
+        set_volume(volume);
+        
         dma_start();
         iis_start();
 

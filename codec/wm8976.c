@@ -96,3 +96,19 @@ void wm8976_init(void)
 	wm8976_write_reg(0xD, 0x21);//Jack detect  
 	wm8976_write_reg(0x7, 0x01);//Jack detect 
 }
+
+/*
+ * volume : 0~100, 0表示最小音量
+ */
+void wm8976_set_volume(int volume)
+{
+    /* ioctl: val越大表示音量越大, 0-最小, 100-最大
+     * WM8976: 52,53号寄存器bit[5:0]表示音量, 值越大音量越大, 0-63
+     */
+    int val = volume * 63 / 100;
+    wm8976_write_reg(52, (1<<8)|volume);
+    wm8976_write_reg(53, (1<<8)|volume);
+}
+    
+
+

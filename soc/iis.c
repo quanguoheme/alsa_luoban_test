@@ -62,3 +62,13 @@ void iis_init(int bits_per_sample, int fs)
     IISCON = (1<<5) | (1<<3) ;
 }
 
+void iis_start(void)
+{
+    IISCON |= (1);
+}
+
+void iis_stop(void)
+{
+    IISCON &= ~(1);
+}
+
