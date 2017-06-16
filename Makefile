@@ -1,34 +1,55 @@
 
-CC      = arm-linux-gcc
-LD      = arm-linux-ld
-AR      = arm-linux-ar
-OBJCOPY = arm-linux-objcopy
-OBJDUMP = arm-linux-objdump
+CROSS_COMPILE = arm-linux-
+AS		= $(CROSS_COMPILE)as
+LD		= $(CROSS_COMPILE)ld
+CC		= $(CROSS_COMPILE)gcc
+CPP		= $(CC) -E
+AR		= $(CROSS_COMPILE)ar
+NM		= $(CROSS_COMPILE)nm
 
-INCLUDEDIR 	:= $(shell pwd)/include
-CFLAGS 		:= -Wall -O2
-CPPFLAGS   	:= -nostdinc -I$(INCLUDEDIR)
+STRIP		= $(CROSS_COMPILE)strip
+OBJCOPY		= $(CROSS_COMPILE)objcopy
+OBJDUMP		= $(CROSS_COMPILE)objdump
 
-export 	CC LD OBJCOPY OBJDUMP INCLUDEDIR CFLAGS CPPFLAGS AR
+export AS LD CC CPP AR NM
+export STRIP OBJCOPY OBJDUMP
 
-objs := head.o init.o nand.o interrupt.o i2c.o at24cxx.o serial.o main.o lib/libc.a
+CFLAGS := -Wall -Werror -O2 -g
+CFLAGS += -I $(shell pwd)/include
 
-i2c.bin: $(objs)
-	${LD} -Ti2c.lds -o i2c_elf $^
-	${OBJCOPY} -O binary -S i2c_elf $@
-	${OBJDUMP} -D -m arm i2c_elf > i2c.dis
+LDFLAGS := -Tsound.lds 
 
-.PHONY : lib/libc.a
-lib/libc.a:
-	cd lib; make; cd ..
-	
-%.o:%.c
-	${CC} $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
+export CFLAGS LDFLAGS
 
-%.o:%.S
-	${CC} $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
+TOPDIR := $(shell pwd)
+export TOPDIR
+
+TARGET := sound
+
+
+obj-y += head.o
+obj-y += init.o
+obj-y += interrupt.o
+obj-y += main.o
+obj-y += serial.o
+obj-y += codec/
+obj-y += format/
+obj-y += lib/
+obj-y += machine/
+obj-y += soc/
+all : 
+	make -C ./ -f $(TOPDIR)/Makefile.build
+	$(LD) $(LDFLAGS) -o $(TARGET) built-in.o
+	${OBJCOPY} -O binary -S $(TARGET) $(TARGET).bin
+	${OBJDUMP} -D -m arm $(TARGET) > $(TARGET).dis
+
 
 clean:
-	make  clean -C lib
-	rm -f i2c.bin i2c_elf i2c.dis *.o
+	rm -f $(shell find -name "*.o")
+	rm -f $(TARGET)
+
+distclean:
+	rm -f $(shell find -name "*.o")
+	rm -f $(shell find -name "*.d")
+	rm -f $(TARGET)
 	
