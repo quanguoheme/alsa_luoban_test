@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include "s3c24xx.h"
 
-extern void I2CIntHandle(void);
 
 void (*isr_handle_array[50])(void);
 
@@ -22,7 +21,7 @@ void init_irq(void)
     INTMOD = 0x0;	      // 所有中断都设为IRQ模式
     INTMSK = BIT_ALLMSK;  // 先屏蔽所有中断
 
-	isr_handle_array[ISR_IIC_OFT]  = I2CIntHandle;
+	isr_handle_array[ISR_DMA2_OFT]  = DMA2IntHandle;
 }
 
 void IRQ_Handle(void)

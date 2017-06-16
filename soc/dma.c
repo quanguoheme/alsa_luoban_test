@@ -17,10 +17,16 @@ struct s3c_dma_regs {
 };
 
 struct s3c_dma_regs *dma_regs;
+
+static int dma_src_rep;
+static int dma_len_rep;
     
 /* 数据传输: 源,目的,长度 */
 void dma_init(unsigned int src, unsigned int len)
 {
+    dma_src_rep = src;
+    dma_len_rep = len;
+    
     dma_regs = (struct s3c_dma_regs *)DMA2_BASE_ADDR;
     
 	/* 把源,目的,长度告诉DMA */
@@ -43,4 +49,14 @@ void dma_stop(void)
 	dma_regs->dmasktrig  &= ~(1<<1);
 }
 
+void dma_repeat(void)
+{
+    dma_init(dma_src_rep, dma_len_rep);
+}
 
+void DMA2IntHandle(void)
+{
+    printf("DMA2 done\n\r");
+    dma_repeat();
+}
+    

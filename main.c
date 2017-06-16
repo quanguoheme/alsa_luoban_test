@@ -24,6 +24,8 @@ int main()
     
     uart0_init();   // 波特率115200，8N1(8个数据位，无校验位，1个停止位)
 
+    init_irq();
+
 
     /* 1. 从NAND把WAV文件读到SDRAM
      * 2. 获得WAV文件的格式: 通道数,采样率
@@ -119,6 +121,8 @@ menu:
             if (c == 'q' || c == 'Q')
             {
                 printf("%c\n\r", c);
+                iis_stop();
+                dma_stop();
                 break;
             }
             else if (c == '-')
