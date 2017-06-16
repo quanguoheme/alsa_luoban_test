@@ -14,11 +14,20 @@ int main()
 	int address;
 	int data;
     int volume = 50; /* 0~100 */
+
+    unsigned int wav_buf = 0x30000000;
+    int fs;
+    int channels;
+    int bits_per_sample;
+    int wav_size;
     
     uart0_init();   // 波特率115200，8N1(8个数据位，无校验位，1个停止位)
 
 
-    read_wav();
+    /* 1. 从NAND把WAV文件读到SDRAM
+     * 2. 获得WAV文件的格式: 通道数,采样率
+     */
+    read_wav(wav_buf, &fs, &channels, &bits_per_sample, &wav_size);
         
     while (1)
     {
