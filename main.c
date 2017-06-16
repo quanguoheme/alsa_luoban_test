@@ -34,6 +34,13 @@ int main()
      * 2. 获得WAV文件的格式: 通道数,采样率
      */
     read_wav(wav_buf, &fs, &channels, &bits_per_sample, &wav_size);
+    printf("wav format: fs = %d, channels = %d, bits_per_sample = %d, wav_size = %d\n\r", fs, channels, bits_per_sample, wav_size);
+    if ((channels != 2) || 
+        ((bits_per_sample != 8) && (bits_per_sample != 16)))
+    {
+        printf("can not support this wav\n\r");
+        while (1);
+    }
         
     while (1)
     {
@@ -42,7 +49,7 @@ menu:
          * 初始化IIS之后它才会给codec芯片发送时钟
          * codec芯片才能被使用
          */
-        iis_init();
+        iis_init(bits_per_sample, fs);
         dma_init();
 
 
