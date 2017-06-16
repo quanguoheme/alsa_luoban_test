@@ -3,6 +3,7 @@
 
 
 void (*isr_handle_array[50])(void);
+extern void DMA2IntHandle(void);
 
 void Dummy_isr(void)
 {

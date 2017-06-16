@@ -9,8 +9,8 @@ extern unsigned char getc(void);
 #define	INBUFSIZE	1024
 
 
-static unsigned char g_pcOutBuf[OUTBUFSIZE];
-static unsigned char g_pcInBuf[INBUFSIZE];
+static char g_pcOutBuf[OUTBUFSIZE];
+static char g_pcInBuf[INBUFSIZE];
 
 
 int printf(const char *fmt, ...)

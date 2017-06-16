@@ -254,6 +254,7 @@ ENTRY(__umodsi3)
 
 
 ENTRY(__divsi3)
+ENTRY(__aeabi_idiv)
 
 	cmp	r1, #0
 	eor	ip, r0, r1			@ save the sign of the result.

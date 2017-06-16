@@ -1,3 +1,4 @@
+#include <s3c24xx.h>
 
 /* L3MODE : GPB2
  * L3DATA : GPB3

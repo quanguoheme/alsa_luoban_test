@@ -21,7 +21,7 @@ struct FMT_BLOCK
 {
     char  szFmtID[4]; // 'f','m','t',' '
     DWORD  dwFmtSize;
-    WAVE_FORMAT wavFormat;
+    struct WAVE_FORMAT wavFormat;
 };
 
 struct DATA_BLOCK
@@ -29,6 +29,8 @@ struct DATA_BLOCK
     char szDataID[4]; // 'd','a','t','a'
     DWORD dwDataSize;
 };
+
+extern void nand_read(unsigned int addr, unsigned char *buf, unsigned int len);
 
 /*
  * 事先使用UBOOT把WAV文件烧在NAND的0x60000
@@ -38,14 +40,14 @@ void read_wav(unsigned int wav_buf, int *fs, int *channels, int *bits_per_sample
     struct FMT_BLOCK *fmtblk;
     struct DATA_BLOCK *datblk;
     
-    nand_read((unsigned char *)wav_buf, 0x60000, 0x200000);
+    nand_read(0x60000, (unsigned char *)wav_buf, 0x200000);
 
     fmtblk = (struct FMT_BLOCK *)(wav_buf + sizeof(struct RIFF_HEADER));
     *fs              = fmtblk->wavFormat.dwSamplesPerSec;
     *channels        = fmtblk->wavFormat.wChannels;
     *bits_per_sample = fmtblk->wavFormat.wBitsPerSample;
 
-    datblk = (struct DATA_BLOCK *)fmtblk[1];
+    datblk = (struct DATA_BLOCK *)&fmtblk[1];
     *wav_size = datblk->dwDataSize;
 }
 

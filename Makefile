@@ -14,7 +14,7 @@ OBJDUMP		= $(CROSS_COMPILE)objdump
 export AS LD CC CPP AR NM
 export STRIP OBJCOPY OBJDUMP
 
-CFLAGS := -Wall -Werror -O2 -g
+CFLAGS := -Wall -Werror -O2 -g -fno-builtin
 CFLAGS += -I $(shell pwd)/include
 
 LDFLAGS := -Tsound.lds 

@@ -1,4 +1,6 @@
-extern void delay(void)
+#include <s3c24xx.h>
+
+extern void delay(void);
 
 static void set_csb(int val)
 {
@@ -106,8 +108,8 @@ void wm8976_set_volume(int volume)
      * WM8976: 52,53号寄存器bit[5:0]表示音量, 值越大音量越大, 0-63
      */
     int val = volume * 63 / 100;
-    wm8976_write_reg(52, (1<<8)|volume);
-    wm8976_write_reg(53, (1<<8)|volume);
+    wm8976_write_reg(52, (1<<8)|val);
+    wm8976_write_reg(53, (1<<8)|val);
 }
     
 

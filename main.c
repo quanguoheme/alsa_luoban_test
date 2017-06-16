@@ -1,6 +1,23 @@
 #include <stdio.h>
 #include "serial.h"
-#include "i2c.h"
+
+void init_irq(void);
+void read_wav(unsigned int wav_buf, int *fs, int *channels, int *bits_per_sample, int *wav_size);
+void iis_init(int bits_per_sample, int fs);
+void iis_start(void);
+void iis_stop(void);
+void dma_init(unsigned int src, unsigned int len);
+void dma_start(void);
+void dma_stop(void);
+void jz2440_init(void);
+void tq2440_init(void);
+void mini2440_init(void);
+void wm8976_init(void);
+void wm8976_set_volume(int volume);
+void uda1341_init(void);
+void uda1341_set_volume(int volume);
+
+
 
 void delay(void)
 {

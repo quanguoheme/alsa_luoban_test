@@ -1,3 +1,4 @@
+#include <stdio.h>
 
 #define DMA0_BASE_ADDR  0x4B000000
 #define DMA1_BASE_ADDR  0x4B000040

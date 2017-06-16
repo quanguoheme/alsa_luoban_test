@@ -1,3 +1,4 @@
+#include <s3c24xx.h>
 
 #define IISCON              (*(volatile unsigned long *)0x55000000)
 #define IISMOD              (*(volatile unsigned long *)0x55000004)
