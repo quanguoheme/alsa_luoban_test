@@ -5,6 +5,12 @@
 unsigned char at24cxx_read(unsigned char address);
 void at24cxx_write(unsigned char address, unsigned char data);
 
+void delay(void)
+{
+    volatile int i = 1000;
+    while (i--);
+}
+
 
 int main()
 {
@@ -32,6 +38,14 @@ int main()
     while (1)
     {
 menu:        
+        /* soc init 
+         * 初始化IIS之后它才会给codec芯片发送时钟
+         * codec芯片才能被使用
+         */
+        iis_init();
+        dma_init();
+
+
         printf("\r\n##### Sound Menu #####\r\n");
         printf("[J] JZ2440\n\r");
         printf("[M] MINI2440\n\r");
@@ -81,9 +95,6 @@ menu:
             }
         }        
 
-        /* soc init */
-        iis_init();
-        dma_init();
 
         dma_start();
         iis_start();
