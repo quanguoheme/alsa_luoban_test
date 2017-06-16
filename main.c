@@ -48,7 +48,7 @@ int main()
      * 2. 获得WAV文件的格式: 通道数,采样率
      */
     read_wav(wav_buf, &fs, &channels, &bits_per_sample, &wav_size);
-    printf("wav format: fs = %d, channels = %d, bits_per_sample = %d, wav_size = %d\n\r", fs, channels, bits_per_sample, wav_size);
+    printf("\n\rwav format: fs = %d, channels = %d, bits_per_sample = %d, wav_size = %d\n\r", fs, channels, bits_per_sample, wav_size);
     if ((channels != 2) || 
         ((bits_per_sample != 8) && (bits_per_sample != 16)))
     {

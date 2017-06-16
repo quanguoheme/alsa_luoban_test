@@ -25,15 +25,15 @@ void iis_init(int bits_per_sample, int fs)
     /* bit[9] : Master clock select, 0-PCLK
      * bit[8] : 0 = Master mode
      * bit[7:6] : 10 = Transmit mode
-     * bit[4] : 1-MSB (Left)-justified format
+     * bit[4] : 0-IIS compatible format
      * bit[2] : 384fs, 确定了MASTER CLOCK之后, fs = MASTER CLOCK/384
      * bit[1:0] : Serial bit clock frequency select, 32fs
      */
      
     if (bits_per_sample == 16)
-        IISMOD = (2<<6) | (1<<4) | (1<<3) | (1<<2) | (1);
+        IISMOD = (2<<6) | (0<<4) | (1<<3) | (1<<2) | (1);
     else
-        IISMOD = (2<<6) | (1<<4) | (0<<3) | (1<<2) | (1);
+        IISMOD = (2<<6) | (0<<4) | (0<<3) | (1<<2) | (1);
 
     /* Master clock = PCLK/(n+1)
      * fs = Master clock / 384
@@ -58,9 +58,9 @@ void iis_init(int bits_per_sample, int fs)
     
     /*
      * bit[5] : Transmit DMA service request, 1-enable
-     * bit[3] : IIS prescaler, 1-enable
+     * bit[1] : IIS prescaler, 1-enable
      */
-    IISCON = (1<<5) | (1<<3) ;
+    IISCON = (1<<5) | (1<<1) ;
 }
 
 void iis_start(void)

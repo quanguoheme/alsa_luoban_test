@@ -23,6 +23,8 @@ void init_irq(void)
     INTMSK = BIT_ALLMSK;  // 先屏蔽所有中断
 
 	isr_handle_array[ISR_DMA2_OFT]  = DMA2IntHandle;
+
+    INTMSK &= ~(1<<ISR_DMA2_OFT);
 }
 
 void IRQ_Handle(void)

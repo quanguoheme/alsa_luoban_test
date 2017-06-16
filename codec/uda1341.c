@@ -198,7 +198,7 @@ void uda1341_init(void)
     set_clk(1);
 
 	uda1341_l3_address(UDA1341_REG_STATUS);
-	uda1341_l3_data(0x40 | STAT0_SC_384FS | STAT0_IF_MSB|STAT0_DC_FILTER); // reset uda1341
+	uda1341_l3_data(0x40 | STAT0_SC_384FS | STAT0_DC_FILTER); // reset uda1341
 	uda1341_l3_data(STAT1 | STAT1_ADC_ON | STAT1_DAC_ON);
 
 	uda1341_l3_address(UDA1341_REG_DATA0);
